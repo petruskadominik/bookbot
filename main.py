@@ -1,12 +1,15 @@
-import string
 def main():
     path_to_book = "books/frankenstein.txt"
     text = get_book_text(path_to_book)
     word_count = count_words(path_to_book)
     character_count = count_characters(path_to_book)
-    print(text)
-    print(word_count)
-    print(character_count)
+    ordered = order_dict(character_count)
+    ##print(text)
+    print(f"--- Begin report of {path_to_book} ---")
+    print(f"{word_count} words found in the document")
+    for c in ordered:
+        print(f"The '{c['letter']}' character found {c['count']} times")
+    print("--- End report ---")
 
 def get_book_text(path):
     with open(path) as f:
@@ -30,8 +33,16 @@ def count_characters(path):
         for char in character_count:
             if c == char:
                character_count[char] += 1
-               
+
     return character_count
+
+
+def order_dict(dict):
+    list_from_dict = []
+    for c in dict:
+        list_from_dict.append({"letter": c, "count": dict[c]})
+    list_from_dict.sort(reverse=True, key=lambda x: x["count"])
+    return list_from_dict
 
 
 main()
